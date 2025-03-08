@@ -5,7 +5,7 @@ If you are not William Field, kindly please close your eyes. Thank you!
 If you'd like to run this exercise on your own and have Docker Deskop, please run the following:
 
 ```
-- docker-composer up -d
+- docker-compose up -d
 ```
 
 Then you can visit the exercise at http://localhost:8080/index.html or just http://localhost:8080
