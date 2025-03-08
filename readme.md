@@ -1,5 +1,5 @@
-# For William Fields eyes only
-If you are not William Fields, kindly please close your eyes. Thank you!
+# For William Field eyes only
+If you are not William Field, kindly please close your eyes. Thank you!
 
 # Viewing Instructions
 If you'd like to run this exercise on your own and have Docker Deskop, please run the following:
