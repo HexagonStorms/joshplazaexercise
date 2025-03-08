@@ -16,3 +16,5 @@ Then you can visit the exercise at http://localhost:8080/index.html or just http
 - index.html: Main interface with Bootstrap styling
 - custom.css: Custom styling
 - debug.php: - helps me look at xpath response
+
+![Techmeme News Analysis Screenshot](https://i.postimg.cc/s2WxPPjR/Screenshot-2025-03-08-125526.png)
