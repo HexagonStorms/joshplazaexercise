@@ -40,37 +40,37 @@ function parseHtmlContent($html) {
             $headline_text = trim($headline->item(0)->nodeValue);
             
             // placeholders
-            $author_text = 'Unknown';
-            $publication_text = 'Unknown';
+            $author = 'Unknown';
+            $publication = 'Unknown';
             
             if ($source->length > 0) {
-                $source_text = trim($source->item(0)->textContent);
-                $source_text = rtrim($source_text, ':');
+                $sourceText = trim($source->item(0)->textContent);
+                $sourceText = rtrim($sourceText, ':');
                 
                 // split source text into author and publication for techmeme publication
-                if (strpos($source_text, '/') !== false) {
-                    $parts = explode('/', $source_text, 2);
-                    $author_text = trim($parts[0]);
-                    $publication_text = trim($parts[1]);
+                if (strpos($sourceText, '/') !== false) {
+                    $parts = explode('/', $sourceText, 2);
+                    $author = trim($parts[0]);
+                    $publication = trim($parts[1]);
                 } else {
                     // no slash, assume it's a publication
-                    $publication_text = $source_text;
+                    $publication = $sourceText;
                 }
             }
             
             // get summary text
-            $summary_text = '';
+            $summaryText = '';
             if ($summary->length > 0) {
-                $summary_text = trim($summary->item(0)->nodeValue);
+                $summaryText = trim($summary->item(0)->nodeValue);
             }
             
             // build news array
             $news[] = [
                 'headline' => $headline_text,
-                'author' => $author_text,
-                'publication' => $publication_text,
-                'full_source' => $author_text . ' / ' . $publication_text,
-                'summary' => $summary_text
+                'author' => $author,
+                'publication' => $publication,
+                'fullSource' => $author . ' / ' . $publication,
+                'summary' => $summaryText
             ];
         }
     }
