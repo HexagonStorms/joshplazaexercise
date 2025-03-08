@@ -109,8 +109,8 @@ function calculate_source_counts($news) {
     
     // loop through each news
     foreach ($news as $item) {
-        // get source
-        $source = $item['source'];
+        // get publication as source
+        $source = $item['publication'];
         
         // if source is empty, skip
         if (empty($source)) continue;

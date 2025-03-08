@@ -83,7 +83,7 @@ function populateNewsTable(news) {
         
         // create source cell
         const sourceCell = document.createElement('td')
-        sourceCell.textContent = item.source
+        sourceCell.textContent = item.publication
         row.appendChild(sourceCell)
         
         // create summary cell
