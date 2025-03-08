@@ -1,7 +1,7 @@
 // api endpoint
 const API_ENDPOINT = 'scraper.php'
 
-// function to generate random colors
+// function to generate random colors! pretty every time you refresh :)
 function generateRandomColors(count) {
     const colors = []
     for (let i = 0; i < count; i++) {
@@ -13,16 +13,12 @@ function generateRandomColors(count) {
     return colors
 }
 
-// function to create sources pie chart
+// Pie chart for sources
 function createSourcesChart(sourceCounts) {
-    // get canvas element
     const ctx = document.getElementById('sourcesChart').getContext('2d')
-    
-    // get sources and counts
     const sources = Object.keys(sourceCounts)
     const counts = Object.values(sourceCounts)
     
-    // generate random colors
     const backgroundColors = generateRandomColors(sources.length)
     
     // create chart
@@ -63,12 +59,10 @@ function createSourcesChart(sourceCounts) {
     })
 }
 
-// function to populate news table
+// Populate news table data
 function populateNewsTable(news) {
     // get table body
     const tableBody = document.getElementById('newsTableBody')
-    
-    // clear table body
     tableBody.innerHTML = ''
     
     // loop through each news
@@ -76,22 +70,22 @@ function populateNewsTable(news) {
         // create table row
         const row = document.createElement('tr')
         
-        // create headline cell
+        // Headline
         const headlineCell = document.createElement('td')
         headlineCell.textContent = item.headline
         row.appendChild(headlineCell)
         
-        // create source cell
+        // Source
         const sourceCell = document.createElement('td')
         sourceCell.textContent = item.publication
         row.appendChild(sourceCell)
 
-        // create author cell
+        // Author
         const authorCell = document.createElement('td')
         authorCell.textContent = item.author
         row.appendChild(authorCell)
         
-        // create summary cell
+        // Summary
         const summaryCell = document.createElement('td')
         summaryCell.textContent = item.summary
         row.appendChild(summaryCell)
@@ -101,7 +95,6 @@ function populateNewsTable(news) {
     })
 }
 
-// function to fetch and display data
 function fetchAndDisplayData() {
     // show loading
     document.getElementById('sources-loading').classList.remove('d-none')
@@ -125,19 +118,16 @@ function fetchAndDisplayData() {
             document.getElementById('sources-loading').classList.add('d-none')
             document.getElementById('news-loading').classList.add('d-none')
             
-            // debug data
+            // debug sutff
             console.log('API Response:', data)
             console.log('Source Counts:', data.source_counts)
             
-            // check if source_counts exists and has data
             if (!data.source_counts || Object.keys(data.source_counts).length === 0) {
                 throw new Error('No source count data available')
             }
             
-            // create sources chart
+            // create & populate sources chart
             createSourcesChart(data.source_counts)
-            
-            // populate news table
             populateNewsTable(data.news)
         })
         .catch(error => {
@@ -145,7 +135,7 @@ function fetchAndDisplayData() {
             document.getElementById('sources-loading').classList.add('d-none')
             document.getElementById('news-loading').classList.add('d-none')
             
-            // show error
+            // display errors
             const sourcesError = document.getElementById('sources-error')
             sourcesError.textContent = `Error: ${error.message}`
             sourcesError.classList.remove('d-none')
@@ -159,8 +149,7 @@ function fetchAndDisplayData() {
         })
 }
 
-// execute when dom is loaded
+// executes when dom is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // fetch and display data
     fetchAndDisplayData()
 })
