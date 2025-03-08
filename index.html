@@ -42,6 +42,26 @@
                 </div>
             </div>
         </div>
+
+        <!-- Chart for Keywords -->
+        <div class="col-md-12">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h2>Keyword Frequency</h2>
+                </div>
+                <div class="card-body">
+                    <div id="keywords-loading" class="loading">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <div id="keywords-error" class="error d-none"></div>
+                    <div class="chart-container">
+                        <canvas id="keywordsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
         
         <!-- Table for Headlines & Summaries -->
         <div class="row">

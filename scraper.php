@@ -80,7 +80,7 @@ function parseHtmlContent($html) {
 
 // function to calculate source counts
 function calculateSourceCounts($news) {
-    $source_counts = [];
+    $sourceCounts = [];
     
     foreach ($news as $item) {
         $source = $item['publication'];
@@ -88,32 +88,74 @@ function calculateSourceCounts($news) {
         // if source is empty, skip
         if (empty($source)) continue;
         
-        // if source exists in source_counts, increment count
-        if (isset($source_counts[$source])) {
-            $source_counts[$source]++;
+        // if source exists in sourceCounts, increment count
+        if (isset($sourceCounts[$source])) {
+            $sourceCounts[$source]++;
         } else {
-            // else add to source_counts
-            $source_counts[$source] = 1;
+            // else add to sourceCounts
+            $sourceCounts[$source] = 1;
         }
     }
     
     // sort sources by count in descending order
-    arsort($source_counts);
+    arsort($sourceCounts);
     
     // limiting to top 10 sources
-    return array_slice($source_counts, 0, 10, true);
+    return array_slice($sourceCounts, 0, 10, true);
 }
 
+
+function extractKeywords($news) {
+    $keywordCounts = [];
+    
+    // common words to exclude
+    $stopWords = [
+        'a', 'an', 'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'with', 'by', 
+        'about', 'as', 'of', 'its', 'it', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 
+        'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'shall', 'should', 
+        'can', 'could', 'may', 'might', 'that', 'this', 'these', 'those', 'from', 'after',
+        'before', 'while', 'during', 'under', 'over', 'above', 'below', 'up', 'down', 
+        'into', 'out', 'through', 'between', 'among', 'per', 'via', 'than', 'etc'
+    ];
+    
+    foreach ($news as $item) {
+        // combine headline and summary for keyword extraction
+        $text = $item['headline'] . ' ' . $item['summary'];
+
+        // convert to lowercase and remove punctuation
+        $text = strtolower($text);
+        $text = preg_replace('/[^\w\s]/', ' ', $text);
+        $words = preg_split('/\s+/', $text, -1, PREG_SPLIT_NO_EMPTY);
+        
+        foreach ($words as $word) {
+            if (strlen($word) < 3 || in_array($word, $stopWords)) {
+                continue;
+            }
+            
+            if (isset($keywordCounts[$word])) {
+                $keywordCounts[$word]++;
+            } else {
+                $keywordCounts[$word] = 1;
+            }
+        }
+    }
+    
+    // sort keywords by count in descending order, limit to top 10
+    arsort($keywordCounts);
+    return array_slice($keywordCounts, 0, 10, true);
+}
 
 function executeScrape() {
     $url = 'https://techmeme.com/';
     $html = getHtmlContent($url);
     $news = parseHtmlContent($html);
-    $source_counts = calculateSourceCounts($news);
+    $sourceCounts = calculateSourceCounts($news);
+    $keywords = extractKeywords($news);
     
     return [
         'news' => $news,
-        'source_counts' => $source_counts
+        'sourceCounts' => $sourceCounts,
+        'keywords' => $keywords
     ];
 }
 

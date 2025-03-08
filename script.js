@@ -95,6 +95,60 @@ function populateNewsTable(news) {
     })
 }
 
+function createKeywordsChart(keywordCounts) {
+    const ctx = document.getElementById('keywordsChart').getContext('2d')
+    const keywords = Object.keys(keywordCounts)
+    const counts = Object.values(keywordCounts)
+    
+    // using a blue for this chart
+    const backgroundColors = keywords.map((_, i) => {
+        const intensity = 100 + Math.floor((i / keywords.length) * 155)
+        return `rgba(25, ${intensity}, 220, 0.8)`
+    })
+    
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: keywords,
+            datasets: [{
+                label: 'Frequency',
+                data: counts,
+                backgroundColor: backgroundColors,
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: 'Top Keywords in Articles'
+                }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Frequency'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Keywords'
+                    }
+                }
+            }
+        }
+    })
+}
+
 function fetchAndDisplayData() {
     // show loading
     document.getElementById('sources-loading').classList.remove('d-none')
@@ -117,18 +171,20 @@ function fetchAndDisplayData() {
             // hide loading
             document.getElementById('sources-loading').classList.add('d-none')
             document.getElementById('news-loading').classList.add('d-none')
+            document.getElementById('keywords-loading').classList.add('d-none')
             
             // debug sutff
             console.log('API Response:', data)
-            console.log('Source Counts:', data.source_counts)
+            console.log('Source Counts:', data.sourceCounts)
             
-            if (!data.source_counts || Object.keys(data.source_counts).length === 0) {
+            if (!data.sourceCounts || Object.keys(data.sourceCounts).length === 0) {
                 throw new Error('No source count data available')
             }
             
-            // create & populate sources chart
-            createSourcesChart(data.source_counts)
+            // create charts
+            createSourcesChart(data.sourceCounts)
             populateNewsTable(data.news)
+            createKeywordsChart(data.keywords)
         })
         .catch(error => {
             // hide loading
